@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jogo da cobrinha</title>
+</head>
+
+<style>
+    .selected {
+        background-color: #66c2ff;
+        border-color: antiquewhite;
+    }
+    
+    a:hover {
+        background-color: #4d4d4d;
+        color: white;
+        cursor: pointer;
+        border-style: solid;
+        border-color: black;
+    }
+</style>
+<script src="snake.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        snake()
+    })
+</script>
+
+<body>
+
+    <canvas id="canvas" width="800" height="800" style="border: solid">
+
+
+    </canvas>
+    <h3>Score: <span id="score"> 0 </span></h3>
+    <div>
+
+        <a style="padding: 10px; border: solid;" data-value="100">Easy</a>
+        <a style="padding: 10px; border: solid;" class="selected" data-value="70">Medium</a>
+        <a style="padding: 10px; border: solid;" data-value="40">Hard</a>
+        <a style="padding: 10px; border: solid;" data-value="20">Very Hard</a>
+    </div>
+</body>
+
+</html>

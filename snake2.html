@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>New snake</title>
+</head>
+
+<body>
+    <style>
+        canvas {
+            background-color: #454443;
+        }
+    </style>
+    <canvas id="canvas" width="600" height="560" style="border:solid;"></canvas>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const scale = 20;
+            const rows = Math.round(canvas.height / scale);
+            const columns = Math.round(canvas.width / scale);
+
+            class Fruit {
+                x;
+                y;
+
+                constructor() {
+                    this.pickLocation();
+                }
+                pickLocation() {
+                    this.x = (Math.floor(Math.random() * rows - 1) + 1) * scale;
+                    this.y = (Math.floor(Math.random() * columns - 1) + 1) * scale;
+                    console.log("X: " + this.x);
+                    console.log("Y: " + this.y);
+
+
+                }
+
+                draw(snake) {
+                    ctx.fillStyle = "#bf392a";
+                    ctx.fillRect(this.x, this.y, scale, scale)
+                }
+
+                clear() {
+                    ctx.clearRect(this.x, this.y, scale, scale);
+                }
+
+            }
+
+            class Snake {
+                y = (Math.floor(Math.random() * rows - 1) + 1) * scale;
+                x = (Math.floor(Math.random() * rows - 1) + 1) * scale;
+                total = 0;
+                tail = [];
+                direction;
+
+                die() {
+                    console.log('die');
+                    this.total = 0;
+                    this.tail = [];
+
+                }
+
+                draw() {
+                    ctx.fillStyle = "#d4d2cf";
+                    for (let i = 0; i < this.tail.length; i++) {
+                        ctx.fillRect(this.tail[i].x, this.tail[i].y, scale - 2, scale - 2);
+                        if (this.x == this.tail[i].x && this.y == this.tail[i].y) {
+                            this.die();
+                        }
+                    }
+
+                    ctx.fillRect(this.x, this.y, scale, scale);
+
+                }
+                clear() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+
+                eat() {
+                    this.total++;
+                }
+
+                move() {
+                    for (let i = 0; i < this.tail.length - 1; i++) {
+                        this.tail[i] = this.tail[i + 1];
+
+                    }
+
+                    this.tail[this.total - 1] = {
+                        x: this.x,
+                        y: this.y
+                    };
+
+                    if (!this.direction) {
+                        return;
+                    }
+
+                    if (this.x > canvas.width) {
+                        this.x = 0;
+                    }
+                    if (this.x < 0) {
+                        this.x = canvas.width;
+                    }
+
+                    if (this.y > canvas.height) {
+                        this.y = 0;
+                    }
+
+                    if (this.y < 0) {
+                        this.y = canvas.height;
+                    }
+
+                    if (this.direction == 37) {
+                        this.x -= scale * 1;
+                    }
+                    if (this.direction == 38) {
+                        this.y -= scale * 1;
+                    }
+
+                    if (this.direction == 39)
+                        this.x += scale * 1;
+
+                    if (this.direction == 40) {
+                        this.y += scale * 1;
+                    }
+                }
+
+                changeDirection(direction) {
+                    if (this.direction == 37 && direction == 39) {
+                        return false;
+                    }
+                    if (this.direction == 39 && direction == 37) {
+                        return false;
+                    }
+                    if (this.direction == 38 && direction == 40) {
+                        return false;
+                    }
+                    if (this.direction == 40 && direction == 38) {
+                        return false;
+                    }
+                    this.direction = direction;
+                }
+            }
+
+            var snake = new Snake();
+            var fruit = new Fruit();
+            setInterval(() => {
+                snake.clear();
+                fruit.draw(snake);
+                snake.move();
+                snake.draw();
+                if (snake.y == fruit.y && snake.x == fruit.x) {
+                    fruit.pickLocation(snake);
+                    snake.eat();
+                }
+
+            }, 60);
+            document.addEventListener('keydown', (event) => {
+                snake.changeDirection(event.keyCode);
+            })
+        })
+    </script>
+</body>
+
+</htmls
