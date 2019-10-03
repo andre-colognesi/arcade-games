@@ -137,5 +137,5 @@ function snake() {
                 break;
         }
     }
-
+    console.log('');
 }
